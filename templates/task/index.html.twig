@@ -13,6 +13,7 @@
                 <th>id</th>
                 <th>Nom</th>
                 <th>Date effective</th>
+                <th>Catégorie</th>
             </thead>
             <tbody>
                 {% if tasks is defined %}
@@ -21,6 +22,7 @@
                             <th scopre="row">{{ task.id }}</th>
                             <td>{{ task.name }}</td>
                             <td>{{ task.dueAt | date('d/m/Y H:i')}}</td>
+                            <td>{{ task.tag.name }}</td>
                         </tr>   
                     {% endfor %}
                 {% endif %}         
