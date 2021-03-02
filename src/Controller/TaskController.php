@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     /**
-     * @Route("/tasks/listing", name="task")
+     * @Route("/tasks/listing", name="tasks_listing")
      */
     public function TaskListing(): Response
     {
@@ -47,6 +47,60 @@ class TaskController extends AbstractController
 
         $form = $this->createForm(TaskType::class, $task, []);
 
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() and $form->isValid()) {
+
+            $task->setName($form['name']-> getData())
+                 ->setDescription($form['description']->getData())
+                 ->setDueAt($form['dueAt']->getData())
+                 ->setTag($form['tag']->getData())
+            ;
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($task);
+            $manager->flush();
+
+            return $this->redirectToRoute('tasks_listing');
+        }
+
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     } 
+
+    /**
+     * @route("/tasks/update/{id}", name="task_update", requirements={"id"="\d+"})
+     *
+     * @param [type] $id
+     * @param Request $request
+     * @return Response
+     */
+    public function updateTask($id ,Request $request) : Response
+    {
+
+        $task = $this->getDoctrine()->getRepository(Task::class)->findOneBy(['id' => $id]);
+
+        $form = $this->createForm(TaskType::class, $task, []);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() and $form->isValid()) {
+
+            $task->setName($form['name']-> getData())
+                 ->setDescription($form['description']->getData())
+                 ->setDueAt($form['dueAt']->getData())
+                 ->setTag($form['tag']->getData())
+            ;
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($task);
+            $manager->flush();
+
+            return $this->redirectToRoute('tasks_listing');
+        }
+
+        return $this->render('task/create.html.twig', [
+            'form' => $form->createView(),
+            'task' => $task
+        ]);
+    }
 }
