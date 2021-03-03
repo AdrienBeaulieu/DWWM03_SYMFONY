@@ -28,7 +28,7 @@
                             <td>{{ task.tag.name }}</td>
                             <td><a href="{{ path('task_update', {'id':task.id})}}" class="btn btn-success">Update</a>
                             </td>
-                            <td><a href="{{ path('task_delete', {'id':task.id})}}" class="btn btn-danger">Delete</a>
+                            <td><a href="{{ path('task_delete', {'id':task.id})}}" class="btn btn-success">Delete</a>
                             </td>
                         </tr>   
                     {% endfor %}
