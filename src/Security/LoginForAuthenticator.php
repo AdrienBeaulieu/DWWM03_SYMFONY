@@ -96,7 +96,7 @@ class LoginForAuthenticator extends AbstractFormLoginAuthenticator implements Pa
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('task_listing'));
+        return new RedirectResponse($this->urlGenerator->generate('tasks_listing'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
