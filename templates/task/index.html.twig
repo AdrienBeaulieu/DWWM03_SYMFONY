@@ -3,11 +3,15 @@
 {% block title %}Liste de Tâches{% endblock %}
 
 {% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 {% endblock %}
 
 {% block body %}
     <div class="container mt-5">
+    <div id="calendar-holder"></div>
      <a href="{{ path('task_create')}}" class="btn btn-primary">Ajouter</a>
         <table class="table table-striped table-bordered" id="taskTable">
             <thead>
@@ -38,6 +42,10 @@
     </div>
 {% block javascripts %}
     <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
     <script>
         $(document).ready( function () {
             $('#taskTable').DataTable();
