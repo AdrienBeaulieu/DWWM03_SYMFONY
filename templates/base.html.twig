@@ -11,6 +11,10 @@
 
     </head>
     <body>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <p>Vous êtes connecté en tant que {{ app.user.email }} </p>
+        <a href="{{ path('app_logout') }}">logout</a>
+    {% endif %}
     <div class="container mt-5">
         {% block body %}{% endblock %}
     </div>
