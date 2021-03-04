@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Tag;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {
@@ -65,31 +66,30 @@ class TaskController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function task(Task $task = null, Request $request) : Response
+    public function task(Task $task = null, Request $request): Response
     {
-       
+
         if (!$task) {
             $task = new Task;
             $flag = true;
         } else {
             $flag = false;
         }
-       
+
         $form = $this->createForm(TaskType::class, $task, []);
 
         // Feed object with our calculated datas
-        if($flag) $task->setCreatedAt(new \DateTime());
+        if ($flag) $task->setCreatedAt(new \DateTime());
 
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() and $form->isValid()) {
+        if ($form->isSubmitted() and $form->isValid()) {
 
-            $task->setName($form['name']-> getData())
-                 ->setDescription($form['description']->getData())
-                 ->setDueAt($form['dueAt']->getData())
-                 ->setTag($form['tag']->getData())
-            ;
+            $task->setName($form['name']->getData())
+                ->setDescription($form['description']->getData())
+                ->setDueAt($form['dueAt']->getData())
+                ->setTag($form['tag']->getData());
 
             $this->manager->persist($task);
             $this->manager->flush();
@@ -106,12 +106,26 @@ class TaskController extends AbstractController
      * @param Task $id
      * @return Response
      */
-    public function delete(Task $task) : Response
+    public function delete(Task $task): Response
     {
 
         $this->manager->remove($task);
         $this->manager->flush();
 
         return $this->redirectToRoute('tasks_listing');
+    }
+
+    /**
+     * @Route("/task/calendar", name="task_calendar")
+     *
+     * @return Response
+     */
+    public function calendar(): Response
+    {
+        $tags = $this->getDoctrine()->getRepository(Tag::class)->findBy([], ['name' => 'ASC']);
+//dd($tags);
+        return $this->render('task/calendar.html.twig', [
+            'tags' => $tags
+        ]);
     }
 }

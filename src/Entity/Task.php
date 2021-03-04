@@ -55,6 +55,16 @@ class Task
      */
     private $tag;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $beginAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $endAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +129,31 @@ class Task
 
         return $this;
     }
+
+    public function getBeginAt(): ?\DateTimeInterface
+    {
+        return $this->beginAt;
+    }
+
+    public function setBeginAt(\DateTimeInterface $BeginAt): self
+    {
+        $this->beginAt = $BeginAt;
+
+        return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(\DateTimeInterface $EndAt): self
+    {
+        $this->endAt = $EndAt;
+
+        return $this;
+    }
+
 
 
 }
