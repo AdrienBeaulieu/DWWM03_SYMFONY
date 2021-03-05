@@ -14,7 +14,6 @@ class CalendarListener
 {
     private $manager;
     private $router;
-    private $csrfTokenManager;
 
     public function __construct(
         EntityManagerInterface $manager,
@@ -24,6 +23,7 @@ class CalendarListener
         $this->router = $router;
 
     }
+
     /**
      * Load all tasks in calendar
      *
@@ -34,6 +34,7 @@ class CalendarListener
     {
         $taskRepository = $this->manager->getRepository(Task::class);
         $tasks = $taskRepository->findAll();
+        
         foreach ($tasks as $task) {
             $taskEvent = new Event(
                 $task->getName(),
