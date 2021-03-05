@@ -39,13 +39,14 @@ class CalendarListener
             $taskEvent = new Event(
                 $task->getName(),
                 $task->getBeginAt(),
-                $task->getEndAt()
+                $task->getEndAt(),
             );
 
 
             $taskEvent->setOptions([
                 'backgroundColor' => '#e95420',
                 'borderColor' => '#e95420',
+                'id' => $task->getId(),
             ]);
 
             $calendar->addEvent($taskEvent);

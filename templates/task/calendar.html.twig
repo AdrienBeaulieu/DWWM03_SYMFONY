@@ -48,6 +48,16 @@
         },
         plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
         timeZone: 'UTC',
+
+        // Handle the click on the task 
+        eventClick: function(info) {
+            console.log(info.event.id);
+            //alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+            //alert('View: ' + info.view.type);
+    
+    
+        }
+
     });
     calendar.render();
 });
