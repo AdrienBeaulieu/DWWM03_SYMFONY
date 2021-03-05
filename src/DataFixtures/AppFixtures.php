@@ -59,7 +59,7 @@ class AppFixtures extends Fixture
                  ->setDescription($faker->paragraph(3))
                  ->setCreatedAt(new DateTime())
                  ->setBeginAt($faker->dateTimeBetween('now', '2 months'))
-                 ->setDueAt($faker->dateTimeBetween($task->getBeginAt(), '2 months'))
+                 ->setDueAt($faker->dateTimeInInterval($task->getBeginAt(), '+2 days'))
                  ->setEndAt($task->getDueAt())
                  ->setTag($faker->randomElement($tTag));
         
