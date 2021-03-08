@@ -31,10 +31,10 @@ class TaskType extends AbstractType
                     'title' => 'Description']])
             ->add('dueAt', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date effective', 
+                'label' => 'entity.effectivedate', 
                 'attr' => [ 
                     'class' => 'form-control col-6', 
-                    'title' => 'Date effective']])
+                    'title' => 'entity.effectivedate']])
             ->add('tag', EntityType::class, [
                   'class' => Tag::class,
                   'query_builder' => function (EntityRepository $er) { return $er->createQueryBuilder('c')->orderBy('c.name', 'ASC');}, 
