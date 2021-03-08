@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Tag;
 use App\Entity\Task;
+use App\Form\MailType;
 use App\Form\TaskType;
+use Symfony\Component\Mime\Email;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -140,5 +143,41 @@ class TaskController extends AbstractController
         return $this->render('task/detail.html.twig', [
             'task' => $task,
         ]);
+    }
+
+    /**
+     * @Route (" /tasks/email/{id}", name="task_email", requirements={"id"="\d+"}))
+     *
+     * @param Request $request
+     * @param Task $task
+     * @param MailerInterface $mailer
+     * @return Response
+     */
+    public function sendEmail(Request $request, Task $task, MailerInterface $mailer): Response
+    {
+        $user = $this->getUser()->getEmail();
+        $sub = "Vous avez reçu la tache: " . $task->getName();
+        $text = "Son contenu est: " . $task->getDescription() . "\n" .
+            "Date de début: " . $task->getCreatedAt()->format('d-m-Y') . "\n" .
+            "Date de fin: " . $task->getDueAt()->format('d-m-Y') . "\n";
+
+        //Creation du formulaire
+        $form = $this->createForm(
+            MailType::class,
+            ['from' => $user, 'name' => $sub, 'description' => $text]
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid()) {
+            $emailDest = $form['to']->getData();
+            $message = (new Email())
+                ->from($user)
+                ->to($emailDest)
+                ->subject($sub)
+                ->text($text);
+            $mailer->send($message);
+            return $this->redirectToRoute('tasks_listing');
+        }
+
+        return $this->render('task/email.html.twig', ['form' => $form->createView()]);
     }
 }
