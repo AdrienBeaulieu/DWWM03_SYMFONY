@@ -11,6 +11,7 @@
 
     </head>
     <body>
+    {% include "tools/flash.html.twig" %}
     {% include "common/navbar.html.twig" %}
     {% include "tools/locale.switcher.html.twig" %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}

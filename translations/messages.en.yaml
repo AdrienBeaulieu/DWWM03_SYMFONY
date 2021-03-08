@@ -25,3 +25,7 @@ login:
   pass: Password
 
 date: m/d/Y g:i a
+
+Flash:
+  mail:
+    success: Your email have been send!

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
@@ -33,15 +34,22 @@ class TaskController extends AbstractController
     private $manager;
 
     /**
+     * 
+     * @param EntityManagerInterface $manager
+     */
+    private $translator;
+
+    /**
      * Constructeur du taskcontroller pour injection de dependance 
      *
      * @param TaskRepository $repository
      * @param EntityManagerInterface $manager
      */
-    public function __construct(TaskRepository $repository, EntityManagerInterface $manager)
+    public function __construct(TaskRepository $repository, EntityManagerInterface $manager, TranslatorInterface $translator)
     {
         $this->repository = $repository;
         $this->manager = $manager;
+        $this->translator = $translator;
     }
 
     /**
@@ -97,6 +105,8 @@ class TaskController extends AbstractController
             $this->manager->persist($task);
             $this->manager->flush();
 
+            $this->addFlash('success', $flag ? "Votre tâche a bien été ajouté":"Votre tache à bien été modifiée");
+
             return $this->redirectToRoute('tasks_listing');
         }
 
@@ -114,6 +124,8 @@ class TaskController extends AbstractController
 
         $this->manager->remove($task);
         $this->manager->flush();
+
+        $this->addFlash('success', 'Votre tâche à bien été supprimée');
 
         return $this->redirectToRoute('tasks_listing');
     }
@@ -175,6 +187,9 @@ class TaskController extends AbstractController
                 ->subject($sub)
                 ->text($text);
             $mailer->send($message);
+
+            $this->addFlash('success', $this->translator->trans('flash.mail.success'));
+
             return $this->redirectToRoute('tasks_listing');
         }
 

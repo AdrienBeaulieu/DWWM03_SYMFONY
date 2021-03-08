@@ -25,3 +25,7 @@ login:
   pass: Mot de passe
 
 date: d/m/Y H:i
+
+Flash:
+  mail:
+    success: Votre mail a été envoyé!
