@@ -6,6 +6,7 @@ button:
   signin: Se connecter
   save: Enregistrer
   logout: Se déconnecter
+  send: Envoyer
 
 entity:
   name: Nom
@@ -13,6 +14,10 @@ entity:
   title: Titre
   effectivedate: Date effective
   description: Déscription
+  sender: Expéditeur
+  recipient: Destinataire
+  object: objet
+  message: message
 
 login:
   title: Connexion

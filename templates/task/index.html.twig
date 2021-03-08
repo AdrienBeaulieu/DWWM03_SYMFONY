@@ -17,6 +17,7 @@
                 <th>Catégorie</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </thead>
             <tbody>
                 {% if tasks is defined %}
@@ -26,6 +27,7 @@
                             <td class="clickable" data-id="{{path('task_detail',{'id':task.id})}}">{{ task.name }}</td>
                             <td>{{ task.dueAt | date('date'|trans)}}</td>
                             <td>{{ task.tag.name }}</td>
+                            <td><a href="{{ path('task_email',{'id': task.id})}}"class="btn btn-primary ">Email</a></td>
                             <td><a href="{{ path('task_update', {'id':task.id})}}" class="btn btn-success">{{ "button.update"|trans}}</a>
                             </td>
                             <td><a href="{{ path('task_delete', {'id':task.id})}}" class="btn btn-danger">{{ "button.delete"|trans}}</a>
