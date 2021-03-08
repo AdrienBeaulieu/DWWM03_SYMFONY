@@ -23,7 +23,7 @@
                     {% for task in tasks %}
                         <tr>
                             <th scopre="row">{{ task.id }}</th>
-                            <td>{{ task.name }}</td>
+                            <td class="clickable" data-id="{{path('task_detail',{'id':task.id})}}">{{ task.name }}</td>
                             <td>{{ task.dueAt | date('date'|trans)}}</td>
                             <td>{{ task.tag.name }}</td>
                             <td><a href="{{ path('task_update', {'id':task.id})}}" class="btn btn-success">{{ "button.update"|trans}}</a>
@@ -38,11 +38,32 @@
     </div>
 {% block javascripts %}
     <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready( function () {
-            $('#taskTable').DataTable();
-    } );
-    </script>
+<script>
+		if(window.location.href.includes('fr')){
+			$(document).ready(function () {
+				$('#tasksTable').DataTable( {
+			"language": {
+				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+				}
+    		});
+		});
+		} else {
+					$(document).ready(function () {
+            $('#tasksTable').DataTable( {
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json"
+				}
+			});
+		});
+		}
+</script>
+<script>
+$(".clickable").click(function(e){
+    //const idcatch = document.querySelector("#clickable")
+    $valeur= e.currentTarget.getAttribute("data-id");
+    document.location=$valeur;
+    return $valeur; });
+</script>
 {% endblock %}
     
 

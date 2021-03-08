@@ -116,16 +116,29 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/task/calendar", name="task_calendar")
+     * @Route("/tasks/calendar", name="task_calendar")
      *
      * @return Response
      */
     public function calendar(): Response
     {
         $tags = $this->getDoctrine()->getRepository(Tag::class)->findBy([], ['name' => 'ASC']);
-//dd($tags);
+        //dd($tags);
         return $this->render('task/calendar.html.twig', [
             'tags' => $tags
+        ]);
+    }
+
+    /**
+     * @route("/tasks/detail/{id}", name="task_detail", requirements={"id"="\d+"})
+     *
+     * @param Task $task
+     * @return Response
+     */
+    public function show(Task $task): Response
+    {
+        return $this->render('task/detail.html.twig', [
+            'task' => $task,
         ]);
     }
 }
