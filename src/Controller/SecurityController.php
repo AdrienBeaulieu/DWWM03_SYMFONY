@@ -20,7 +20,7 @@ class SecurityController extends AbstractController
      * @var UserPasswordEncoderInterface
      */
     private $encoder;
-    
+
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;

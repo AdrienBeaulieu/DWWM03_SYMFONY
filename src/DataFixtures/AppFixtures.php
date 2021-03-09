@@ -31,42 +31,6 @@ class AppFixtures extends Fixture
         // Création d'un nouvelle objet faker
         $faker = Factory::create('fr_FR');
 
-        // Création de 5 catégories
-        for ($c = 0; $c < 5; $c++) {
-
-            // création objet tag
-            $tag = new Tag;
-
-            // On ajouter un mot à notre catégorie
-            $tag->setName($faker->colorName());
-
-            $manager->persist($tag);
-        }
-
-        $manager->flush();
-
-        //Récupérer les catégories créés
-        $tTag = $manager->getRepository(Tag::class)->findAll();
-
-        // Création entre 15 et 30 tâches aléatoirement
-        for ($t = 0; $t < mt_rand(15,30); $t++) {
-
-            // Créer un nouvel objet task
-            $task = new Task;
-
-            // On nourrit l'objet task
-            $task->setName($faker->sentence(6))
-                 ->setDescription($faker->paragraph(3))
-                 ->setCreatedAt(new DateTime())
-                 ->setBeginAt($faker->dateTimeBetween('now', '2 months'))
-                 ->setDueAt($faker->dateTimeInInterval($task->getBeginAt(), '+2 days'))
-                 ->setEndAt($task->getDueAt())
-                 ->setTag($faker->randomElement($tTag));
-        
-            // Faire persister les données
-            $manager->persist($task);
-        }
-
         // Crate 5 users
         for ($u = 0; $u < 5;$u++) {
 
@@ -91,6 +55,46 @@ class AppFixtures extends Fixture
 
             // Faire persister les données
             $manager->persist($user);
+        }
+
+        $manager->flush();
+
+        // Création de 5 catégories
+        for ($c = 0; $c < 5; $c++) {
+
+            // création objet tag
+            $tag = new Tag;
+
+            // On ajouter un mot à notre catégorie
+            $tag->setName($faker->colorName());
+
+            $manager->persist($tag);
+        }
+
+        $manager->flush();
+
+        //Récupérer les catégories créés
+        $tTag = $manager->getRepository(Tag::class)->findAll();
+        $allUsers = $manager->getRepository(User::class)->findAll();
+
+        // Création entre 15 et 30 tâches aléatoirement
+        for ($t = 0; $t < mt_rand(15,30); $t++) {
+
+            // Créer un nouvel objet task
+            $task = new Task;
+
+            // On nourrit l'objet task
+            $task->setName($faker->sentence(6))
+                 ->setDescription($faker->paragraph(3))
+                 ->setCreatedAt(new DateTime())
+                 ->setBeginAt($faker->dateTimeBetween('now', '2 months'))
+                 ->setDueAt($faker->dateTimeInInterval($task->getBeginAt(), '+2 days'))
+                 ->setEndAt($task->getDueAt())
+                 ->setTag($faker->randomElement($tTag))
+                 ->setUser($faker->randomElement($allUsers));
+        
+            // Faire persister les données
+            $manager->persist($task);
         }
 
         // PUSH EN BDD

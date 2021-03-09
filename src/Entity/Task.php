@@ -65,6 +65,12 @@ class Task
      */
     private $endAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +156,18 @@ class Task
     public function setEndAt(\DateTimeInterface $EndAt): self
     {
         $this->endAt = $EndAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

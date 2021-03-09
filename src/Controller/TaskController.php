@@ -55,16 +55,22 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/listing", name="tasks_listing")
      */
-    public function TaskListing(): Response
+    public function taskListing(): Response
     {
-        // Récupérer les informations de l'utilisateur connecté
-        // $user = $this->getUser();
-
-        $task = $this->repository->findAll();
-
-
+        // Récuperer les infos du user connecté
+        $user = $this->getUser();
+        if ($user->getRoles()[0] === 'ROLE_ADMIN') {
+            // Recuperer les données du repository pour l'admin
+            $tasks = $this->repository->findAll();
+        } else {
+            // Recuperer les données du repository pour le user connecté
+            $tasks = $this->repository->findBy(
+                ['user' => $user->getId()],
+                ['id' => 'ASC']
+            );
+        }
         return $this->render('task/index.html.twig', [
-            'tasks' => $task,
+            'tasks' => $tasks,
         ]);
     }
 
@@ -79,6 +85,8 @@ class TaskController extends AbstractController
      */
     public function task(Task $task = null, Request $request): Response
     {
+        // Récuperer les infos du user connecté
+        $user = $this->getUser();
 
         if (!$task) {
             $task = new Task;
@@ -100,12 +108,13 @@ class TaskController extends AbstractController
             $task->setName($form['name']->getData())
                 ->setDescription($form['description']->getData())
                 ->setDueAt($form['dueAt']->getData())
-                ->setTag($form['tag']->getData());
+                ->setTag($form['tag']->getData())
+                ->setUser($user);
 
             $this->manager->persist($task);
             $this->manager->flush();
 
-            $this->addFlash('success', $flag ? "Votre tâche a bien été ajouté":"Votre tache à bien été modifiée");
+            $this->addFlash('success', $flag ? "Votre tâche a bien été ajouté" : "Votre tache à bien été modifiée");
 
             return $this->redirectToRoute('tasks_listing');
         }
