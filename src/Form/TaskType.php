@@ -45,6 +45,19 @@ class TaskType extends AbstractType
                       'title' => 'Catégorie'
                   ]
             ])
+            ->add('beginAt', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date de début', 
+                'attr' => [ 
+                    'class' => 'form-control col-6', 
+                    'title' => 'Date de début']])
+            ->add('endAt', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date de fin', 
+                'attr' => [ 
+                    'class' => 'form-control col-6', 
+                    'title' => 'Date de fin']])
+
             ->add('save', SubmitType::class , [
                 'label' => 'Enregistrer', 
                 'attr' => [ 
