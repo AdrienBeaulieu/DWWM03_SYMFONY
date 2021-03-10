@@ -10,7 +10,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">Informations sur la tâche</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" id="btnClose" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#exampleModalCenter').modal('hide');">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -69,14 +69,18 @@
 
         // Handle the click on the task 
         eventClick: function(info) {
-console.log(info.event);
+        console.log(info.event); // DEBUG
+
+        // Récupère l'élèment html pour y afficher les informations.
             var text = document.getElementsByClassName('modal-body');
             text[0].innerHTML = "ID: " + info.event.id 
                                 + '<br><br> Name: ' + info.event.title
                                 + '<br><br> Début: ' + info.event.extendedProps.beginAt.date
                                 + '<br><br> Fin: ' + info.event.extendedProps.endAt.date
                                 + '<br><br> Description: ' + info.event.extendedProps.fulltext;
-            $('#exampleModalCenter').modal('show');
+
+          // Appel du modal lors du clique sur la tâche.
+          $('#exampleModalCenter').modal('show');
         }
 
     });
