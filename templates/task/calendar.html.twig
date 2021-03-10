@@ -15,10 +15,34 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="modal-body-div">
+
+            </div>
+            <div class="modal-body-modify">
+              <br><br>
+
+              <form action="{{ path('task_calendar_request') }}" method="GET">
+                <div class="form-group">
+                  <label for="newName">Nouveau Nom</label>
+                  <input id="newName" type="text" name="name_task" class="form-control">
+                  <br>
+                  <label for="desc">Description</label>
+                  <textarea name="desc" id="desc" cols="30" rows="10" class="form-control">
+                  </textarea>
+                  <br>
+                  <label for="debut">Date de début</label>
+                  <input type="date" name="debut" id="debut" class="form-control">
+                  <br>
+                  <label for="fin">Date de fin</label>
+                  <input type="date" name="fin" id="fin" class="form-control">
+                  <input type="hidden" name="id" value="" class="hidden_id">
+                  <input type="submit" value="Modifier" class="btn btn-primary">
+                  </div>
+              </form>
+
+            </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -71,16 +95,31 @@
         eventClick: function(info) {
         console.log(info.event); // DEBUG
 
-        // Récupère l'élèment html pour y afficher les informations.
-            var text = document.getElementsByClassName('modal-body');
-            text[0].innerHTML = "ID: " + info.event.id 
-                                + '<br><br> Name: ' + info.event.title
-                                + '<br><br> Début: ' + info.event.extendedProps.beginAt.date
-                                + '<br><br> Fin: ' + info.event.extendedProps.endAt.date
-                                + '<br><br> Description: ' + info.event.extendedProps.fulltext;
+        //console.log(date.getDate());        
+        // Récupère le hidden input pour lui passer l'id
+          var hidden_input = document.getElementsByClassName('hidden_id');
+          hidden_input[0].value = info.event.id;
+        // Récupère le newName pour lui passer la valeur actuelle
+          var newName = document.getElementById('newName');
+          newName.value = info.event.title;
+        // Same pour description
+          var desc = document.getElementById('desc');
+          desc.value = info.event.extendedProps.fulltext;
+        // Same pour début
+          var debut = document.getElementById('debut');
+          debut.value = info.event.extendedProps.beginAt.date.substr(0,10);
+        // same pour fin
+          var fin = document.getElementById('fin');
+          console.log(fin);
+          fin.value = info.event.extendedProps.endAt.date.substr(0,10);
 
-          // Appel du modal lors du clique sur la tâche.
-          $('#exampleModalCenter').modal('show');
+
+
+        // Appel du modal lors du clique sur la tâche.
+        $('#exampleModalCenter').modal('show');
+
+        // Récupère la valeur du champ text
+
         }
 
     });
