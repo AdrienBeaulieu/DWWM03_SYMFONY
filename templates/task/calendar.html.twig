@@ -15,32 +15,31 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="modal-body-div">
+              <div class="modal-body-div">
 
-            </div>
-            <div class="modal-body-modify">
-              <br><br>
+              </div>
+                <div class="modal-body-modify">
+                  <br><br>
 
-              <form action="{{ path('task_calendar_request') }}" method="GET">
-                <div class="form-group">
-                  <label for="newName">Nouveau Nom</label>
-                  <input id="newName" type="text" name="name_task" class="form-control">
-                  <br>
-                  <label for="desc">Description</label>
-                  <textarea name="desc" id="desc" cols="30" rows="10" class="form-control">
-                  </textarea>
-                  <br>
-                  <label for="debut">Date de début</label>
-                  <input type="date" name="debut" id="debut" class="form-control">
-                  <br>
-                  <label for="fin">Date de fin</label>
-                  <input type="date" name="fin" id="fin" class="form-control">
-                  <input type="hidden" name="id" value="" class="hidden_id">
-                  <input type="submit" value="Modifier" class="btn btn-primary">
-                  </div>
-              </form>
-
-            </div>
+                  <form action="{{ path('task_calendar_request') }}" method="GET">
+                    <div class="form-group">
+                      <label for="newName">Nouveau Nom</label>
+                      <input id="newName" type="text" name="name_task" class="form-control">
+                      <br>
+                      <label for="desc">Description</label>
+                      <textarea name="desc" id="desc" cols="30" rows="10" class="form-control">
+                      </textarea>
+                      <br>
+                      <label for="debut">Date de début</label>
+                      <input type="date" name="debut" id="debut" class="form-control">
+                      <br>
+                      <label for="fin">Date de fin</label>
+                      <input type="date" name="fin" id="fin" class="form-control">
+                      <input type="hidden" name="id" value="" class="hidden_id">
+                      <input type="submit" value="Modifier" class="btn btn-primary">
+                      </div>
+                  </form>
+                </div>
           </div>
           <div class="modal-footer">
           </div>
@@ -79,7 +78,7 @@
                 extraParams: {
                     filters: JSON.stringify({})
                 },
-                success: () => { console.log(event);},
+                success: () => { console.log('Success')},
                 failure: () => { console.log("error");},
             },
         ],
@@ -91,11 +90,10 @@
         plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
         timeZone: 'UTC',
 
-        // Handle the click on the task 
+        // Gère le clique sur la task
         eventClick: function(info) {
-        console.log(info.event); // DEBUG
-
-        //console.log(date.getDate());        
+          console.log(info.event);
+       
         // Récupère le hidden input pour lui passer l'id
           var hidden_input = document.getElementsByClassName('hidden_id');
           hidden_input[0].value = info.event.id;
@@ -110,15 +108,10 @@
           debut.value = info.event.extendedProps.beginAt.date.substr(0,10);
         // same pour fin
           var fin = document.getElementById('fin');
-          console.log(fin);
           fin.value = info.event.extendedProps.endAt.date.substr(0,10);
-
-
 
         // Appel du modal lors du clique sur la tâche.
         $('#exampleModalCenter').modal('show');
-
-        // Récupère la valeur du champ text
 
         }
 
