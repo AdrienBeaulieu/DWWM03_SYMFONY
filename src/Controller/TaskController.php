@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use DOMXPath;
+use DOMDocument;
 use App\Entity\Tag;
+use Knp\Snappy\Pdf;
 use App\Entity\Task;
 use App\Form\MailType;
 use App\Form\TaskType;
@@ -14,6 +17,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
@@ -109,7 +113,8 @@ class TaskController extends AbstractController
                 ->setDescription($form['description']->getData())
                 ->setDueAt($form['dueAt']->getData())
                 ->setTag($form['tag']->getData())
-                ->setUser($user);
+                ->setUser($user)
+                ->setAddress($form['address']->getData());
 
             $this->manager->persist($task);
             $this->manager->flush();
@@ -220,11 +225,11 @@ class TaskController extends AbstractController
         $id = $datas['id'];
         $name = $datas['name_task'];
         $desc = $datas['desc'];
-        $debut = new \DateTime($datas['debut'].' 12:00:00'); // Adapte la date au format dateTimeInterface
-        $fin = new \DateTime($datas['fin'].' 12:00:00');
-        
+        $debut = new \DateTime($datas['debut'] . ' 12:00:00'); // Adapte la date au format dateTimeInterface
+        $fin = new \DateTime($datas['fin'] . ' 12:00:00');
+
         // Récupère l'objet task selon l'id
-        $task = $this->getDoctrine()->getRepository(Task::class)->findOneBy(['id'=> $id]);
+        $task = $this->getDoctrine()->getRepository(Task::class)->findOneBy(['id' => $id]);
 
         // Modifie ses propriétés
         $task->setName($name)->setDescription($desc)->setBeginAt($debut)->setEndAt($fin);
@@ -235,5 +240,60 @@ class TaskController extends AbstractController
 
 
         return $this->redirectToRoute('task_calendar');
+    }
+
+    /**
+     * @Route("/tasks/detail/{id}/pdf", name="task_pdf", requirements={"id"="\d+"})
+     *
+     * @param Task $task
+     * @param Pdf $knpSnappyPdf
+     * @return void
+     */
+    public function exportTaskToPdf(Task $task, Pdf $knpSnappyPdf)
+    {
+        $html = $this->renderView('task/detail.html.twig', [
+            'task' => $task
+        ]);
+        $html = $this->prepareHTMLtoPDF($html);
+        return new PdfResponse(
+            $knpSnappyPdf->getOutputFromHtml($html),
+            'todo' . $task->getId() . '.pdf'
+        );
+    }
+
+    /**
+     * @Route("/tasks/listing/pdf", name="tasks_list_pdf", requirements={"id"="\d+"})
+     *
+     * @param Pdf $knpSnappyPdf
+     * @return void
+     */
+    public function exportTasksListToPdf(Pdf $knpSnappyPdf)
+    {
+        $html = $this->taskListing()->getContent();
+        $html = $this->prepareHTMLtoPDF($html);
+        return new PdfResponse(
+            $knpSnappyPdf->getOutputFromHtml($html),
+            'todolist.pdf'
+        );
+    }
+
+    /**
+     * Remove all nodes from Html content containing class "not-pdf"
+     *
+     * @param [type] $html
+     * @return string
+     */
+    private function prepareHTMLtoPDF($html): string
+    {
+        // Using DOMDocument and DOMXPath
+        $dom = new \DOMDocument;
+        @$dom->loadHTML($html);
+        $xPath = new DOMXPath($dom);
+        $delNodes = $xPath->query('//*[contains(@class,"not-pdf")]');
+        // Remove all nodes containing class "not-pdf"
+        foreach ($delNodes as $node) {
+            $node->parentNode->removeChild($node);
+        }
+        return $dom->saveHTML();
     }
 }

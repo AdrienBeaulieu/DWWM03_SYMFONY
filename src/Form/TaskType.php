@@ -57,7 +57,11 @@ class TaskType extends AbstractType
                 'attr' => [ 
                     'class' => 'form-control col-6', 
                     'title' => 'Date de fin']])
-
+            ->add('address', TextType::class, [
+                'label' => 'address', 
+                'attr' => [ 
+                    'class' => 'form-control col-6', 
+                    'title' => 'address']])
             ->add('save', SubmitType::class , [
                 'label' => 'Enregistrer', 
                 'attr' => [ 
