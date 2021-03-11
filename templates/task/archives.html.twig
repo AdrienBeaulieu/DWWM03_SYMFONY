@@ -8,10 +8,9 @@
 {% endblock %}
 {% block body %}
 	<div class="container mt-5">
-		<div class="not-pdf">
-			<a href="{{ path('task_create') }}" class="btn btn-primary">{{"button.add"|trans}}</a>
-			<a href="{{ path('tasks_list_pdf') }}" class="btn btn-primary mb-3 ml-2">Export to PDF</a>
-		</div>
+    <div class="not-pdf">
+        <a href="{{ path('tasks_list_pdf') }}" class="btn btn-primary mb-3 ml-2">Export to PDF</a>
+    </div>
 		<table class="table table-striped table-bordered" id="tasksTable">
 			<thead>
 				<th>Id</th>
@@ -22,16 +21,9 @@
 				{% if is_granted('ROLE_ADMIN') %}
 					<th>User ID</th>
 				{% endif %}
-				<div class="not-pdf">
-					<th></th>
-					<th></th>
-					<th></th>
-					{% if is_granted('ROLE_ADMIN') %}
-						<th>Archivage</th>
-					{% else %}
-						<th></th>
-					{% endif %}
-				</div>
+                <div class="not-pdf">
+                    <th></th>
+                </div>
 			</thead>
 			<tbody>
 				{% if tasks is defined %}
@@ -45,27 +37,11 @@
 							{% if is_granted('ROLE_ADMIN') %}
 								<td>{{ task.user.id }}</td>
 							{% endif %}
-							<div class="not-pdf">
-								<td>
-									<a href="{{ path('task_update', {'id' : task.id})}}" class="btn btn-success">Update</a>
-								</td>
-								<td>
-									<a href="{{ path('task_delete', {'id' : task.id})}}" class="btn btn-danger">Delete</a>
-								</td>
-								<td>
-									<a href="{{ path('task_email',{'id': task.id})}}" class="btn btn-primary ">Email</a>
-								</td>
-								<td>
-									{% if is_granted('ROLE_ADMIN') %}
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input " {% if task.isArchived == true %} checked {% endif %} disabled id="customSwitch2">
-											<label class="custom-control-label" for="customSwitch2"></label>
-										</div>
-									{% else %}
-										<a href="{{ path('task_archive',{'id': task.id})}}" class="btn btn-danger ">Archiver</a>
-									{% endif %}
-								</td>
-							</div>
+                            <div class="not-pdf">
+							{% if is_granted('ROLE_ADMIN') %}
+                                <td><a href="{{ path('task_republier',{'id': task.id})}}" class="btn btn-primary ">Republier</a></td>
+                            {% endif %}
+                            </div>
 
 						</tr>
 					{% endfor %}
