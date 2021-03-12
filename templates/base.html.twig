@@ -11,10 +11,9 @@
 
     </head>
     <body>
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <p>Vous êtes connecté en tant que {{ app.user.email }} </p>
-        <a href="{{ path('app_logout') }}">logout</a>
-    {% endif %}
+    {% include "tools/flash.html.twig" %}
+    {% include "common/navbar.html.twig" %}
+    {% include "tools/locale.switcher.html.twig" %}
     <div class="container mt-5">
         {% block body %}{% endblock %}
     </div>

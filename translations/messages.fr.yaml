@@ -1,0 +1,32 @@
+# translations/messages.fr.yaml
+button:
+  add: Ajouter
+  update: Modifier
+  delete: Supprimer
+  signin: Se connecter
+  save: Enregistrer
+  logout: Se déconnecter
+  send: Envoyer
+
+entity:
+  name: Nom
+  tag: Catégorie
+  title: Titre
+  effectivedate: Date effective
+  description: Déscription
+  sender: Expéditeur
+  recipient: Destinataire
+  object: objet
+  message: message
+
+login:
+  title: Connexion
+  logged: Vous êtes connecté sur
+  pass: Mot de passe
+
+date: d/m/Y H:i
+
+Flash:
+  mail:
+    success: Votre mail a été envoyé!
+    password: Votre mot de passe a été changé

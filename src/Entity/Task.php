@@ -43,17 +43,36 @@ class Task
     private $createdAt;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="due_at", type="datetime", nullable=false)
-     */
-    private $dueAt;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Tag::class, inversedBy="task")
      * @ORM\JoinColumn(nullable=false)
      */
     private $tag;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $beginAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $endAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
 
     public function getId(): ?int
     {
@@ -96,18 +115,6 @@ class Task
         return $this;
     }
 
-    public function getDueAt(): ?\DateTimeInterface
-    {
-        return $this->dueAt;
-    }
-
-    public function setDueAt(\DateTimeInterface $dueAt): self
-    {
-        $this->dueAt = $dueAt;
-
-        return $this;
-    }
-
     public function getTag(): ?Tag
     {
         return $this->tag;
@@ -119,6 +126,67 @@ class Task
 
         return $this;
     }
+
+    public function getBeginAt(): ?\DateTimeInterface
+    {
+        return $this->beginAt;
+    }
+
+    public function setBeginAt(\DateTimeInterface $BeginAt): self
+    {
+        $this->beginAt = $BeginAt;
+
+        return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(\DateTimeInterface $EndAt): self
+    {
+        $this->endAt = $EndAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
 
 
 }
